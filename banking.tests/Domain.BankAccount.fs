@@ -51,10 +51,32 @@ module ``debit should`` =
             [ AccountCredited
                 { Date = expectedDate
                   Amount = expectedCredit
-                  Solde =  expectedCredit } ]
+                  Solde = expectedCredit } ]
         |> When BankAccount.debit expectedDate expectedDebit
         |> Then
             [ AccountDebited
                 { Date = expectedDate
                   Amount = expectedDebit
-                  Solde = expectedCredit - expectedDebit} ]
+                  Solde = expectedCredit - expectedDebit } ]
+
+
+    [<Fact>]
+    let ``raise surcharge expected when solde is not enough`` () =
+        let expectedDate = DateTime.Now
+        let expectedCredit = 15m
+        let expectedDebit = 20m
+        Given
+            [ AccountCredited
+                { Date = expectedDate
+                  Amount = expectedCredit
+                  Solde = expectedCredit } ]
+        |> When BankAccount.debit expectedDate expectedDebit
+        |> Then
+            [ AccountDebited
+                { Date = expectedDate
+                  Amount = expectedDebit
+                  Solde = expectedCredit - expectedDebit }
+              SurchargeExpected
+                  { Date = expectedDate
+                    Amount = expectedDebit
+                    Solde = expectedCredit - expectedDebit } ]
