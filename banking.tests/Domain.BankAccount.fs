@@ -39,3 +39,22 @@ module ``credit should`` =
                 { Date = expectedDate
                   Amount = creditAmount
                   Solde = expectedSolde } ]
+
+module ``debit should`` =
+
+    [<Fact>]
+    let ``raise account debited`` () =
+        let expectedDate = DateTime.Now
+        let expectedCredit = 15m
+        let expectedDebit = 10m
+        Given
+            [ AccountCredited
+                { Date = expectedDate
+                  Amount = expectedCredit
+                  Solde =  expectedCredit } ]
+        |> When BankAccount.debit expectedDate expectedDebit
+        |> Then
+            [ AccountDebited
+                { Date = expectedDate
+                  Amount = expectedDebit
+                  Solde = expectedCredit - expectedDebit} ]

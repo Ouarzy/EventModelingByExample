@@ -4,7 +4,9 @@ open System
 
 type Euro = decimal
 
-type Events = AccountCredited of Transaction
+type Events =
+    | AccountCredited of Transaction
+    | AccountDebited of Transaction
 
 and Transaction =
     { Date: DateTime
@@ -18,6 +20,7 @@ let initial = { Solde = 0m }
 
 let private apply (state: State) = function
     | AccountCredited event -> { Solde = state.Solde + event.Amount }
+    | AccountDebited event -> { Solde = state.Solde - event.Amount }
 
 let private applyAll history =
     history |> Seq.fold apply initial
@@ -29,3 +32,9 @@ let credit date amount history =
           Amount = amount
           Solde = amount + state.Solde} ]
 
+let debit date amount history =
+    let state = applyAll history
+    [ AccountDebited
+        { Date = date
+          Amount = amount
+          Solde = state.Solde - amount} ]
