@@ -7,10 +7,18 @@ open Xunit
 open Banking.Tests.Dsl
 open Banking.Domain
 
-module ``my command should`` =
+module ``credit should`` =
 
     [<Fact>]
-    let ``fail`` () =
-      Given []
-      |> When BankAccount.credit DateTime.Now 10m
-      |> Then []
+    let ``raise account credited`` () =
+        let expectedDate = DateTime.Now
+        let expectedAmount = 15m
+        Given []
+        |> When BankAccount.credit expectedDate expectedAmount
+        |> Then
+            [ AccountCredited
+                { Date = expectedDate
+                  Amount = expectedAmount
+                  Solde = expectedAmount } ]
+
+
