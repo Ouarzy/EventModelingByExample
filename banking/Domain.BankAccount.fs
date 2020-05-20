@@ -17,13 +17,15 @@ type State =
 let initial = { Solde = 0m }
 
 let private apply (state: State) = function
-    | _ -> state
+    | AccountCredited event -> { Solde = state.Solde + event.Amount }
 
 let private applyAll history =
     history |> Seq.fold apply initial
 
 let credit date amount history =
+    let state = applyAll history
     [ AccountCredited
         { Date = date
           Amount = amount
-          Solde = amount } ]
+          Solde = amount + state.Solde} ]
+
