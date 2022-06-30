@@ -7,6 +7,6 @@ The board to exercise Event Modeling is available here:
 https://miro.com/app/board/uXjVOpRxu8A=/?share_link_id=347849748487
 
 An example of a solution Event Modeling is available here:
-https://miro.com/app/board/uXjVOpRxu_k=/?share_link_id=86941783373
+https://miro.com/app/board/uXjVOpRfPWI=/?share_link_id=260393321610
 
 After the Event Modeling, try to implement the bank account aggregate using event sourcing.
